@@ -362,7 +362,7 @@ def verify_otp_change_password(request):
    user=Account.objects.get(email=request.session['email'])
    if request.method=="POST":
       if str(request.session['OTP_Key']) != str(request.POST['otp']):
-         print(request.session['OTP_Key'],request.POST['otp'])
+         print(request.session['OTP_Key'],request.POST['otp'],"sdfffffffffffffff")
          messages.success(request, "OTP verification failed")
          return redirect('user:user_profile') 
         #  user.is_active=True
