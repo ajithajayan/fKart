@@ -27,7 +27,7 @@ from django.contrib.auth.tokens import default_token_generator
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def admin_login(request):
-    if request.user.is_authenticated:
+    if request.user.is_superadmin:
         return redirect('account:admin_dashboard')
 
     if request.method == "POST":
@@ -48,6 +48,9 @@ def admin_login(request):
 @login_required(login_url='account:admin_login')  # Use the named URL pattern
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def admin_dashboard(request):
+    if not request.user.is_superadmin:
+        messages.error(request, "Invalid admin credentials!")
+        return redirect('account:admin_login')
     return render(request, 'admin_side/base.html')
 
 def admin_logout(request):
