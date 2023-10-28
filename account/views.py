@@ -22,12 +22,25 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
+from django.views.decorators.csrf import csrf_protect
+from functools import wraps
 
 # Create your views here.
 
+def superadmin_required(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.is_superadmin:
+            return view_func(request, *args, **kwargs)
+        else:
+            messages.error(request, "Invalid admin credentials!")
+            return redirect('account:admin_login')
+    return _wrapped_view
+
+
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def admin_login(request):
-    if request.user.is_superadmin:
+    if request.user.is_authenticated and request.user.is_superadmin:
         return redirect('account:admin_dashboard')
 
     if request.method == "POST":
@@ -47,15 +60,15 @@ def admin_login(request):
 
 @login_required(login_url='account:admin_login')  # Use the named URL pattern
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@superadmin_required
 def admin_dashboard(request):
-    if not request.user.is_superadmin:
-        messages.error(request, "Invalid admin credentials!")
-        return redirect('account:admin_login')
     return render(request, 'admin_side/base.html')
+
 
 def admin_logout(request):
     logout(request)
     return redirect('account:admin_login')  
+
 
 
 
