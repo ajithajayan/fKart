@@ -14,7 +14,7 @@ from django.contrib import messages
 from wallet_coupon.models import Coupon
 
 
-@login_required(login_url='login')    
+@login_required(login_url='account:user-login')   
 def payments(request):
     id=request.GET.get('order_id')
     payment_id=request.GET.get('payment_id')

@@ -79,7 +79,6 @@ def admin_logout(request):
 def user_login(request):
     if request.user.is_authenticated:
         return redirect('account:index')
-    
     if request.method=='POST':
         email = request.POST.get('email')
         password = request.POST.get('password')

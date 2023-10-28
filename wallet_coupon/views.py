@@ -10,7 +10,7 @@ from django.contrib import messages
 # Create your views here.
 
 
-@login_required(login_url='login')
+@login_required(login_url='account:user-login')
 def apply_coupon(request):
 
     if request.method == 'POST':
@@ -59,7 +59,7 @@ def apply_coupon(request):
 
 
 
-@login_required(login_url='login')
+@login_required(login_url='account:user-login')
 def payment(request, order_id):
     coupon_discount = 0
     # try:
@@ -125,7 +125,7 @@ def payment(request, order_id):
 # ---------------------------------------------------------wishlist------------------------------------------------------
 
 
-
+@login_required(login_url='account:user-login')
 def addto_wishlist(request,product_id):
     product=Product.objects.get(product_id=product_id)
     if WishList.objects.filter(user=request.user, product=product).exists():
@@ -137,7 +137,7 @@ def addto_wishlist(request,product_id):
 
     return redirect(request.META.get('HTTP_REFERER', 'wallet:wishlist_page'))
 
-
+@login_required(login_url='account:user-login')
 def display_wishlist(request):
     wishlist_items=WishList.objects.filter(user=request.user)
     user_wishlist_products = [item.product for item in wishlist_items]
@@ -148,7 +148,7 @@ def display_wishlist(request):
 
     return render(request, 'user_side/wishlist_page.html', context)
 
-
+@login_required(login_url='account:user-login')
 def remove_wishlist(request,product_id):
     product = get_object_or_404(Product, product_id=product_id)
     
@@ -167,7 +167,7 @@ def remove_wishlist(request,product_id):
 
 
 #----------------------------------------------------------------Wallet------------------------------------------------------
-
+@login_required(login_url='account:user-login')
 # @login_required(login_url='login')
 def wallet(request):
     cur_user = request.user
@@ -188,7 +188,7 @@ def wallet(request):
 
 
 
-@login_required(login_url='login')
+@login_required(login_url='account:user-login')
 def pay_from_wallet(request, order_id):
     cur_user = request.user
     order = Order.objects.get(id=order_id)
@@ -262,7 +262,7 @@ def pay_from_wallet(request, order_id):
 
 
 
-@login_required(login_url='login')
+@login_required(login_url='account:user-login')
 def return_order(request, order_id):
     order = Order.objects.get(id=order_id)
     order_method=order.payment.payment_method

@@ -118,8 +118,10 @@ def product_detail(request, product_id):
 
 #---------------------------------------------------checkout--------------------------------------------------------
 
-# @login_required(login_url='account:user_login')
+@login_required(login_url='account:user-login')
 def checkout(request, total=0, quantity=0, cart_items=None):
+    if not request.user.is_authenticated:
+        return redirect('account:index')
     try:
         tax = 0
         grand_total = 0
@@ -193,8 +195,11 @@ def checkout(request, total=0, quantity=0, cart_items=None):
 
 #---------------------------------------------------user profile--------------------------------------------------------
 
-@login_required(login_url='account:user_login')
+@login_required(login_url='account:user-login')
 def user_profile(request):
+    if not request.user.is_authenticated:
+        return redirect('account:index')
+    
     user_profile = Account.objects.get(email=request.user.email)
 
     context = {
@@ -203,8 +208,11 @@ def user_profile(request):
     return render(request, 'user_side/user_profile.html', context)
 
 
-@login_required(login_url='account:user_login')
+@login_required(login_url='account:user-login')
 def edit_profile(request):
+    if not request.user.is_authenticated:
+        return redirect('account:index')
+    
     user_profile = Account.objects.get(email=request.user.email) # Get the UserProfile instance for the logged-in user
 
     if request.method == 'POST':
@@ -231,8 +239,11 @@ def edit_profile(request):
     
 
 
-@login_required(login_url='account:user_login')
+@login_required(login_url='account:user-login')
 def address_page(request):
+    if not request.user.is_authenticated:
+        return redirect('account:index')
+    
     user = request.user
     addresses = AdressBook.objects.filter(user=user)
     default_address = addresses.filter(is_default=True).first()
@@ -245,8 +256,11 @@ def address_page(request):
 
 
 
-@login_required(login_url='account:user_login')
+@login_required(login_url='account:user-login')
 def add_address(request):
+    if not request.user.is_authenticated:
+        return redirect('account:index')
+    
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -281,8 +295,12 @@ def add_address(request):
         return render(request, 'user_side/add_address.html')
     
 
-@login_required(login_url='account:user_login')
+@login_required(login_url='account:user-login')
 def edit_address(request, address_id):
+
+    if not request.user.is_authenticated:
+        return redirect('account:index')
+    
     address = get_object_or_404(AdressBook, pk=address_id)
 
     if request.method == 'POST':
@@ -305,8 +323,10 @@ def edit_address(request, address_id):
 
 
 
-@login_required(login_url='account:user_login')
+@login_required(login_url='account:user-login')
 def delete_address(request, address_id):
+    if not request.user.is_authenticated:
+        return redirect('account:index')
     
     try:
         address = AdressBook.objects.get(id=address_id)
@@ -317,8 +337,11 @@ def delete_address(request, address_id):
     return redirect('user:address_page')
 
 
-@login_required(login_url='account:user_login')
+@login_required(login_url='account:user-login')
 def set_default_address(request, address_id):
+    if not request.user.is_authenticated:
+        return redirect('account:index')
+    
     addr_list = AdressBook.objects.filter(user=request.user)
     for a in addr_list:
         a.is_default = False
@@ -378,8 +401,11 @@ def verify_otp_change_password(request):
 
 #---------------------------------------------------place order--------------------------------------------------------
 
-@login_required(login_url='account:user_login')
+@login_required(login_url='account:user-login')
 def place_order(request, total=0, quantity=0):
+    if not request.user.is_authenticated:
+        return redirect('account:index')
+    
     current_user = request.user
     # coupons = Coupon.objects.all()
 
@@ -468,8 +494,11 @@ def place_order(request, total=0, quantity=0):
 
 
 
-@login_required(login_url='account:user_login')
+@login_required(login_url='account:user-login')
 def order_confirmed(request):
+    if not request.user.is_authenticated:
+        return redirect('account:index')
+    
     order_number = request.GET.get('order_number')
     transID = request.GET.get('payment_id')
     coupon_discount = 0
@@ -514,8 +543,11 @@ def order_confirmed(request):
 
 
 
-@login_required(login_url='account:user_login')
+@login_required(login_url='account:user-login')
 def pay_with_cash_on_delivery(request, order_id):
+    if not request.user.is_authenticated:
+        return redirect('account:index')
+    
     cur_user = request.user
     order = Order.objects.get(id=order_id)
     print('***************order*************',order)
@@ -604,8 +636,11 @@ def pay_with_cash_on_delivery(request, order_id):
 #-------------------------------------------------------#order------------------------------------------------------------------
 
 
-@login_required(login_url='account:user_login')
+@login_required(login_url='account:user-login')
 def order_history(request):
+    if not request.user.is_authenticated:
+        return redirect('account:index')
+    
     orders = Order.objects.filter(user=request.user, is_ordered=True).order_by('-created_at')
     context = {
         'orders': orders,
@@ -614,8 +649,11 @@ def order_history(request):
 
 
 
-@login_required(login_url='account:user_login')
+@login_required(login_url='account:user-login')
 def ordered_product_details(request, order_id):
+    if not request.user.is_authenticated:
+        return redirect('account:index')
+    
     order = Order.objects.get(id=order_id)
     ordered_products = OrderProduct.objects.filter(order=order)
     context = {
@@ -625,8 +663,11 @@ def ordered_product_details(request, order_id):
     return render(request, 'user_side/ordered_product_details.html', context)
 
 
-@login_required(login_url='account:user_login')
+@login_required(login_url='account:user-login')
 def download_invoice(request, order_id):
+    if not request.user.is_authenticated:
+        return redirect('account:index')
+    
     order_number = request.GET.get('order_number')
     transID = request.GET.get('payment_id')
    
