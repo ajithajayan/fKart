@@ -27,25 +27,54 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
 
 </head>
+
+
 <body>
+
+    <script>
+        // Function to validate input fields and prevent consecutive spaces
+        // Function to validate input fields
+    function validateForm() {
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var mobile = document.getElementById("mobile").value;
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirm_password").value;
+
+        // Regular expression to check for consecutive spaces
+        var spacePattern = /\s/;
+
+        if (spacePattern.test(name) || spacePattern.test(email) || spacePattern.test(password) || spacePattern.test(confirmPassword)) {
+            alertify.error("Please avoid spaces in the input fields.");
+            return false; // Prevent form submission
+        }
+
+        if (mobile.length !== 10 || isNaN(mobile)) {
+            alertify.error("Mobile number must be exactly 10 digits and contain only numbers.");
+            return false; // Prevent form submission
+        }
+
+        
+    }
+    </script>
     <div class="container">
         <h1 class="text-center mb-4">User Signup</h1>
-        <form method="post" action="{% url 'account:user-signup' %}">
+        <form method="post" action="{% url 'account:user-signup' %}" onsubmit="return validateForm();">
             {% csrf_token %}
 
             <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="text" name="name" class="form-control" required>
-            </div>  
-
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+    
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" name="email" class="form-control" required>
+                <input type="email" id="email" name="email" class="form-control" required>
             </div>
-
+    
             <div class="form-group">
                 <label for="mobile">Mobile:</label>
-                <input type="tel" name="mobile" class="form-control" required>
+                <input type="tel" id="mobile" name="mobile" class="form-control" required>
             </div>
 
             <div class="form-group">
