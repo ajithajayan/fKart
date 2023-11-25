@@ -1,4 +1,4 @@
-#Footkart - Your Ultimate Shoe Shopping Destination
+Footkart - Your Ultimate Shoe Shopping Destination
 
 Welcome to Footkart, your go-to online marketplace for an exquisite collection of shoes!
 
