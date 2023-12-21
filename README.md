@@ -23,4 +23,4 @@ Add to Cart: Found your perfect pair? Add it to your cart and proceed to checkou
 
 Secure Checkout: Complete your purchase with our secure checkout process.
 
-Track Your Order: Stay informed about the status of your order with our order tracking feature....
+Track Your Order: Stay informed about the status of your order with our order tracking feature.
