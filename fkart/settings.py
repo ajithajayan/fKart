@@ -117,8 +117,8 @@ DATABASES = {
 
 # Payment details 
 
-RAZOR_KEY_ID = 'rzp_test_xvSCaam6lRoeDa'
-RAZOR_KEY_SECRET = 'h6zgngMPJXxc6tJJBS9eH4VW'
+RAZOR_KEY_ID = 'rzp_test_8YadWnMFagK0BT'
+RAZOR_KEY_SECRET = 'IIVtitS18q043XaLKTFlaGju'
 
 
 # Password validation
