@@ -98,6 +98,7 @@ COLOR_CHOICES = [
     ('yellow', 'Yellow'),
     ('red', 'Red'),
     ('white', 'White'),
+    ('Blue', 'Blue'),
 ]
 
 SIZE_CHOICES = [
