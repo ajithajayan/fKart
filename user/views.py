@@ -93,7 +93,7 @@ def index(request, category_slug=None, price_range=None,sort_by=None):
         products = products.order_by('price')
     elif sort_by == 'high_to_low':
         products = products.order_by('-price')
-    paginator = Paginator(products, 4)
+    paginator = Paginator(products, 8)
     page = request.GET.get('page')
     paged_products = paginator.get_page(page)
 
